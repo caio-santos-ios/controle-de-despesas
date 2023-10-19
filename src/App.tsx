@@ -3,7 +3,7 @@ import './App.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 interface INote {
   id?: number;
@@ -18,8 +18,8 @@ function App() {
   const parsedNotes = storedNotes ? JSON.parse(storedNotes) : [];
   const [notes, setNotes] = useState(parsedNotes);
   
-  const onSubmit = (data: INote) => {
-    const newData = {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const newData: any = {
       id: notes.length + 1,
       ...data
     }
@@ -29,8 +29,8 @@ function App() {
     }
   }
   
-  const remove = (id: number) => {
-    const itemRemoved: INote[] = notes.filter((note: INote) => note.id != id)
+  const remove = (id: string) => {
+    const itemRemoved: INote[] = notes.filter((note: INote) => note.id != Number(id))
     setNotes(itemRemoved)
     localStorage.setItem("@notes", JSON.stringify(itemRemoved))
   }
@@ -68,7 +68,7 @@ function App() {
                         :
                         <span className='tipo_nota' style={{background: 'red'}}>{note.tipo_nota}</span>
                       }
-                      <button onClick={(e) => remove(e.target.id)} id={note.id} className='btn_delete'>D</button>
+                      <button id={note.id?.toString()} onClick={(e) => remove(e.currentTarget.id)} className='btn_delete'>D</button>
                     </li>
                   )
                 })
