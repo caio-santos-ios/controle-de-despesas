@@ -13,7 +13,10 @@ interface INote {
 
 function App() {
   const { register, handleSubmit} = useForm()
-  const [notes, setNotes] = useState(JSON.parse(localStorage.getItem('@notes')) ? JSON.parse(localStorage.getItem('@notes')) : [])
+  // const [notes, setNotes] = useState(JSON.parse(localStorage.getItem('@notes')) ? JSON.parse(localStorage.getItem('@notes')) : [])
+  const storedNotes = localStorage.getItem('@notes');
+  const parsedNotes = storedNotes ? JSON.parse(storedNotes) : [];
+  const [notes, setNotes] = useState(parsedNotes);
   
   const onSubmit = (data: INote) => {
     const newData = {
